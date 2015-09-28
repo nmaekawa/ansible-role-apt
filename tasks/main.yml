@@ -2,7 +2,7 @@
 # tasks file for update-everything
 # Debian doesn't have sudo out of the box,
 # so install it prior to running sudo commands.
-- name: ensure sudo is present
+- name: Ensure sudo is present.
   apt:
     name: sudo
     state: present
@@ -10,20 +10,21 @@
     cache_valid_time: 3600
   when: ansible_distribution == 'Debian'
 
-- name: ensure aptitude is present
+- name: Ensure aptitude is present.
   apt:
     name: aptitude
     state: present
     update_cache: yes
     cache_valid_time: 3600
+  when: ansible_distribution == 'Debian'
 
-- name: perform aptitude safe-upgrade
+- name: Perform aptitude safe-upgrade.
   apt:
     upgrade: safe
     update_cache: yes
     cache_valid_time: 3600
 
-- name: clean old apt packages
+- name: Clean old apt packages.
   command: apt-get autoremove -y
   register: autoremove_result
   changed_when: "'0 upgraded' not in autoremove_result.stdout"
