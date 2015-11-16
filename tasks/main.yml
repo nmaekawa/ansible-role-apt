@@ -16,6 +16,9 @@
     upgrade: safe
     update_cache: yes
     cache_valid_time: 3600
+  tags:
+    - apt-upgrade
+    - safe-upgrade
 
 - name: Clean old apt packages.
   sudo: yes
