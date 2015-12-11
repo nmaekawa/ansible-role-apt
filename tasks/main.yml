@@ -1,13 +1,24 @@
 ---
-- name: Update apt cache.
-  apt:
-    update_cache: yes
-    cache_valid_time: 3600
-
 # tasks file for update-everything
 # Debian doesn't have sudo out of the box,
 # so install it prior to running sudo commands.
 - include: Debian_sudo.yml
+  when: ansible_distribution == 'Debian' or
+        ansible_user_uid == 1
+
+- name: Update apt cache.
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  sudo: yes
+
+- name: Install aptitude.
+  apt:
+    name: aptitude
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+  sudo: yes
   when: ansible_distribution == 'Debian'
 
 - name: Perform aptitude safe-upgrade.
