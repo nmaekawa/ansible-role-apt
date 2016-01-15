@@ -20,7 +20,7 @@
     - apt-upgrade
     - safe-upgrade
 
-- name: Clean old apt packages.
+- name: Remove unneeded packages.
   sudo: yes
   command: apt-get autoremove -y
   register: autoremove_result
@@ -29,3 +29,11 @@
     - apt
     - autoremove
 
+- name: Clean the apt cache.
+  sudo: yes
+  command: apt-get autoclean
+  register: autoclean_result
+  changed_when: "'Del' in autoclean_result.stdout"
+  tags:
+    - apt
+    - autoclean
