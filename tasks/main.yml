@@ -7,22 +7,22 @@
         ansible_user_uid == 1
 
 - name: Update apt cache.
+  become: yes
   apt:
     update_cache: yes
     cache_valid_time: 3600
-  sudo: yes
 
 - name: Install aptitude.
+  become: yes
   apt:
     name: aptitude
     state: present
     update_cache: yes
     cache_valid_time: 3600
-  sudo: yes
   when: ansible_distribution == 'Debian'
 
 - name: Perform aptitude safe-upgrade.
-  sudo:  yes
+  become:  yes
   apt:
     upgrade: safe
     update_cache: yes
@@ -32,7 +32,7 @@
     - safe-upgrade
 
 - name: Remove unneeded packages.
-  sudo: yes
+  become:  yes
   command: apt-get autoremove -y
   register: autoremove_result
   changed_when: "'0 upgraded' not in autoremove_result.stdout"
@@ -41,7 +41,7 @@
     - autoremove
 
 - name: Clean the apt cache.
-  sudo: yes
+  become: yes
   command: apt-get autoclean
   register: autoclean_result
   changed_when: "'Del' in autoclean_result.stdout"

@@ -3,7 +3,7 @@ galaxy_info:
   author: Conor Schaefer
   description: Upgrade all apt packages on Debian/Ubuntu.
   license: MIT
-  min_ansible_version: 1.5
+  min_ansible_version: 1.9
   platforms:
   - name: Ubuntu
     versions:
