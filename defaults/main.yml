@@ -1,2 +1,12 @@
 ---
-# defaults file for update-everything
+
+apt_cache_valid_time: 3600
+apt_safe_upgrade: no  # do a full upgrade
+
+apt_required_packages:
+    - python-apt
+    - unattended-upgrades
+
+# define to purge packages
+# apt_purge_packages: []
+

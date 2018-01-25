@@ -1,25 +1,33 @@
-update-everything
+apt
 =========
-Extremely simple Ansible role to safely upgrade all packages on a Debian system.
-Will update the apt cache as well, if necessary.
-If `ansible_distribution == 'Debian'`, then `sudo` will be installed, as well.
+Simple ansible role to upgrade (full or safe[default]), install a
+list of required packages (defauts: [python-apt, unattended-upgrades]), and
+purge list of unwanted packages (defaults: none).
 
-Requirements
+
+requirements
 ------------
 
 A Debian-based system with `apt` installed.
 
-Example Playbook
+
+
+example playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
+    - hosts: all
       roles:
-         - { role: update-everything }
+         - { role: ansible-role-apt, apt_required_packages: ['htop'] }
 
-License
+license
 -------
 
-MIT
+Apache2
+
+
+credits
+-------
+
+* https://github.com/conorsch/ansible-role-update-everything.git
+* https://github.com/ANXS/apt.git
 

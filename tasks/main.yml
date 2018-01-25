@@ -1,50 +1,52 @@
 ---
-# tasks file for update-everything
-# Debian doesn't have sudo out of the box,
-# so install it prior to running sudo commands.
-- include: Debian_sudo.yml
-  when: ansible_distribution == 'Debian' or
-        ansible_user_uid == 1
 
-- name: Update apt cache.
-  become: yes
+- name: ensure sudo as debian might not have it by default
+  apt:
+    name: sudo
+    state: present
+
+- name: update apt cache
   apt:
     update_cache: yes
-    cache_valid_time: 3600
+    cache_valid_time: '{{ apt_cache_valid_time }}'
 
-- name: Install aptitude.
-  become: yes
+- name: install aptitude
   apt:
     name: aptitude
     state: present
-    update_cache: yes
-    cache_valid_time: 3600
-  when: ansible_os_family == 'Debian'
 
-- name: Perform aptitude safe-upgrade.
-  become:  yes
+- name: perform aptitude safe-upgrade
   apt:
     upgrade: safe
-    update_cache: yes
-    cache_valid_time: 3600
-  tags:
-    - apt-upgrade
-    - safe-upgrade
+  when: apt_safe_upgrade is defined and apt_safe_upgrade
 
-- name: Remove unneeded packages.
-  become:  yes
-  command: apt-get autoremove -y
+- name: perform aptitude full-upgrade
+  apt:
+    upgrade: full
+  when: apt_safe_upgrade is not defined or not apt_safe_upgrade
+
+- name: remove unneeded packages
+  apt:
+    autoremove: yes
   register: autoremove_result
   changed_when: "'0 upgraded' not in autoremove_result.stdout"
-  tags:
-    - apt
-    - autoremove
 
-- name: Clean the apt cache.
-  become: yes
-  command: apt-get autoclean
+- name: clean the apt cache
+  apt:
+    autoclean: yes
   register: autoclean_result
   changed_when: "'Del' in autoclean_result.stdout"
-  tags:
-    - apt
-    - autoclean
+
+- name: ensure required packages installed
+  apt:
+      pkg: '{{ item }}'
+      state: present
+  with_items: '{{ apt_required_packages }}'
+
+- name: purge packages
+  apt:
+      pkg: '{{ item }}'
+      state: absent
+      purge: yes
+  with_items: '{{ apt_purge_packages }}'
+  when: apt_purge_packages is defined

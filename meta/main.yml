@@ -1,9 +1,9 @@
 ---
 galaxy_info:
-  author: Conor Schaefer
-  description: Upgrade all apt packages on Debian/Ubuntu.
-  license: MIT
-  min_ansible_version: 1.9
+  author: nmaekawa
+  description: apt-get dist-upgrade, install, purge pkgs in Debian/Ubuntu.
+  license: Apache2
+  min_ansible_version: 2.4
   platforms:
   - name: Ubuntu
     versions:
