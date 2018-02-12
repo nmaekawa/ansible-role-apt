@@ -17,7 +17,7 @@ example playbook
 
     - hosts: all
       roles:
-         - { role: ansible-role-apt, apt_required_packages: ['htop'] }
+         - { role: ansible-role-apt, apt_required_packages: ['htop'], apt_other_packages }
 
 license
 -------

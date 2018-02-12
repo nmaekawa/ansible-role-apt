@@ -43,6 +43,13 @@
       state: present
   with_items: '{{ apt_required_packages }}'
 
+- name: ensure other packages installed
+  apt:
+      pkg: '{{ item }}'
+      state: present
+  with_items: '{{ apt_other_packages }}'
+  when: apt_other_packages is defined
+
 - name: purge packages
   apt:
       pkg: '{{ item }}'
