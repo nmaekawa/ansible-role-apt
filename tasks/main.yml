@@ -39,21 +39,18 @@
 
 - name: ensure required packages installed
   apt:
-      pkg: '{{ item }}'
+      name: '{{ apt_required_packages }}'
       state: present
-  with_items: '{{ apt_required_packages }}'
 
 - name: ensure other packages installed
   apt:
-      pkg: '{{ item }}'
+      name: '{{ apt_other_packages }}'
       state: present
-  with_items: '{{ apt_other_packages }}'
   when: apt_other_packages is defined
 
 - name: purge packages
   apt:
-      pkg: '{{ item }}'
+      name: '{{ apt_purge_packages }}'
       state: absent
       purge: yes
-  with_items: '{{ apt_purge_packages }}'
   when: apt_purge_packages is defined
