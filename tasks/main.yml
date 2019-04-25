@@ -1,10 +1,5 @@
 ---
 
-- name: ensure sudo as debian might not have it by default
-  apt:
-    name: sudo
-    state: present
-
 - name: update apt cache
   apt:
     update_cache: yes
@@ -24,6 +19,11 @@
   apt:
     upgrade: full
   when: apt_safe_upgrade is not defined or not apt_safe_upgrade
+
+- name: ensure sudo as debian might not have it by default
+  apt:
+    name: sudo
+    state: present
 
 - name: remove unneeded packages
   apt:
